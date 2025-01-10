@@ -11,5 +11,10 @@ function getAvailableProducts(products) {
     availableProducts = products.filter((product) => product).map((product) => product.name);
     return availableProducts;
 }
+function categoriesElements(array, { name }) {
+    const filteredArray = array.filter((element) => element.category === name);
+    return filteredArray;
+}
 console.log(getAvailableProducts(products));
+console.log(categoriesElements(products, { name: 'Elektronia' }));
 //# sourceMappingURL=app.js.map

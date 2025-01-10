@@ -20,4 +20,10 @@ function getAvailableProducts(products: ProductTuple[]): string[] {
     return availableProducts;
 }
 
+function categoriesElements(array: ProductTuple[], { name }: { name: string }): ProductTuple[] {
+    const filteredArray = array.filter((element) => element.category === name);
+    return filteredArray;
+}
+
 console.log(getAvailableProducts(products));
+console.log(categoriesElements(products, {name: 'Elektronika'} ))
