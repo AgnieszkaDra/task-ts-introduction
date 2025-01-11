@@ -15,6 +15,14 @@ function categoriesElements(array, { name }) {
     const filteredArray = array.filter((element) => element.category === name);
     return filteredArray;
 }
+function categoriesElementsAveragePrices(array, category) {
+    const filteredArray = array.filter((element) => element.category === category);
+    if (filteredArray.length === 0)
+        return 0; // Prevent division by zero
+    const totalPrice = filteredArray.reduce((sum, product) => sum + product.price, 0);
+    return totalPrice / filteredArray.length; // Calculate average price
+}
 console.log(getAvailableProducts(products));
-console.log(categoriesElements(products, { name: 'Elektronia' }));
+console.log(categoriesElements(products, { name: 'Elektronika' }));
+console.log(categoriesElementsAveragePrices(products, "Elektronika"));
 //# sourceMappingURL=app.js.map

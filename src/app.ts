@@ -25,5 +25,15 @@ function categoriesElements(array: ProductTuple[], { name }: { name: string }): 
     return filteredArray;
 }
 
+function categoriesElementsAveragePrices(array: ProductTuple[], category: string): number {
+    const filteredArray = array.filter((element) => element.category === category);
+    
+    if (filteredArray.length === 0) return 0; 
+
+    const totalPrice = filteredArray.reduce((sum, product) => sum + product.price, 0);
+    return totalPrice / filteredArray.length; 
+}
+
 console.log(getAvailableProducts(products));
 console.log(categoriesElements(products, {name: 'Elektronika'} ))
+console.log(categoriesElementsAveragePrices(products, "Elektronika"));
