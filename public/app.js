@@ -6,23 +6,34 @@ let products = [
     { name: "Bluza", category: "Odzież", price: 150, isAvailable: false, sales: 99 },
     { name: "Lodówka", category: "AGD", price: 2000, isAvailable: true, sales: 22 },
 ];
-function getAvailableProducts(products) {
+function getAvailableProducts(array) {
     let availableProducts = [];
-    availableProducts = products.filter((product) => product).map((product) => product.name);
+    availableProducts = array.filter((product) => product).map((product) => product.name);
     return availableProducts;
 }
-function categoriesElements(array, { name }) {
+function getProductsByCategory(array, { name }) {
     const filteredArray = array.filter((element) => element.category === name);
     return filteredArray;
 }
-function categoriesElementsAveragePrices(array, category) {
-    const filteredArray = array.filter((element) => element.category === category);
-    if (filteredArray.length === 0)
-        return 0; // Prevent division by zero
-    const totalPrice = filteredArray.reduce((sum, product) => sum + product.price, 0);
-    return totalPrice / filteredArray.length; // Calculate average price
+function getAveragePriceByCategory(array, category) {
+    const categoryProducts = getProductsByCategory(array, { name: category });
+    return categoryProducts.length
+        ? categoryProducts.reduce((sum, { price }) => sum + price, 0) / categoryProducts.length
+        : 0;
+}
+function sortProducts(array, key, ascending = true) {
+    return [...array].sort((a, b) => {
+        if (key === "name") {
+            return ascending ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
+        }
+        else if (key === "price") {
+            return ascending ? a.price - b.price : b.price - a.price;
+        }
+        return 0;
+    });
 }
 console.log(getAvailableProducts(products));
-console.log(categoriesElements(products, { name: 'Elektronika' }));
-console.log(categoriesElementsAveragePrices(products, "Elektronika"));
+console.log(getProductsByCategory(products, { name: 'Elektronika' }));
+console.log(getAveragePriceByCategory(products, "Elektronika"));
+console.log("Sorted by name ascending name", sortProducts(products, "name", true));
 //# sourceMappingURL=app.js.map

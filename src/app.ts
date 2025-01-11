@@ -14,26 +14,36 @@ let products: ProductTuple[] = [
     { name: "Lodówka", category: "AGD", price: 2000, isAvailable: true, sales: 22 },
 ];
 
-function getAvailableProducts(products: ProductTuple[]): string[] {
+function getAvailableProducts(array: ProductTuple[]): string[] {
   let availableProducts = [];
-    availableProducts = products.filter((product) => product).map((product) => product.name);
+    availableProducts = array.filter((product) => product).map((product) => product.name);
     return availableProducts;
 }
 
-function categoriesElements(array: ProductTuple[], { name }: { name: string }): ProductTuple[] {
+function getProductsByCategory(array: ProductTuple[], { name }: { name: string }): ProductTuple[] {
     const filteredArray = array.filter((element) => element.category === name);
     return filteredArray;
 }
 
-function categoriesElementsAveragePrices(array: ProductTuple[], category: string): number {
-    const filteredArray = array.filter((element) => element.category === category);
-    
-    if (filteredArray.length === 0) return 0; 
+function getAveragePriceByCategory(array: ProductTuple[], category: string): number {
+    const categoryProducts = getProductsByCategory(array, { name: category });
+    return categoryProducts.length
+        ? categoryProducts.reduce((sum, { price }) => sum + price, 0) / categoryProducts.length
+        : 0;
+}
 
-    const totalPrice = filteredArray.reduce((sum, product) => sum + product.price, 0);
-    return totalPrice / filteredArray.length; 
+function sortProducts(array: ProductTuple[], key: "name" | "price", ascending: boolean = true): ProductTuple[] {
+    return [...array].sort((a, b) => {
+        if (key === "name") {
+            return ascending ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
+        } else if (key === "price") { 
+            return ascending ? a.price - b.price : b.price - a.price;
+        }
+        return 0; 
+    });
 }
 
 console.log(getAvailableProducts(products));
-console.log(categoriesElements(products, {name: 'Elektronika'} ))
-console.log(categoriesElementsAveragePrices(products, "Elektronika"));
+console.log(getProductsByCategory(products, { name: 'Elektronika' }));
+console.log(getAveragePriceByCategory(products, "Elektronika"));
+console.log("Sorted by name ascending name", sortProducts(products, "name", true));
