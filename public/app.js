@@ -21,13 +21,16 @@ function getAveragePriceByCategory(array, category) {
         ? categoryProducts.reduce((sum, { price }) => sum + price, 0) / categoryProducts.length
         : 0;
 }
-function sortProducts(array, key, ascending = true) {
+function sortProducts(array, key, bool = true) {
+    if (key === "isAvailable") {
+        return array.filter((product) => product.isAvailable === bool);
+    }
     return [...array].sort((a, b) => {
         if (key === "name") {
-            return ascending ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
+            return bool ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
         }
         else if (key === "price") {
-            return ascending ? a.price - b.price : b.price - a.price;
+            return bool ? a.price - b.price : b.price - a.price;
         }
         return 0;
     });
@@ -35,5 +38,6 @@ function sortProducts(array, key, ascending = true) {
 console.log(getAvailableProducts(products));
 console.log(getProductsByCategory(products, { name: 'Elektronika' }));
 console.log(getAveragePriceByCategory(products, "Elektronika"));
-console.log("Sorted by name ascending name", sortProducts(products, "name", true));
+console.log("Sorted by name ascending:", sortProducts(products, "name", true));
+console.log("Sorted by isAvailable product", sortProducts(products, "isAvailable", false));
 //# sourceMappingURL=app.js.map

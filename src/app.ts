@@ -32,18 +32,26 @@ function getAveragePriceByCategory(array: ProductTuple[], category: string): num
         : 0;
 }
 
-function sortProducts(array: ProductTuple[], key: "name" | "price", ascending: boolean = true): ProductTuple[] {
+function sortProducts(
+    array: ProductTuple[],
+    key: "name" | "price" | "isAvailable",
+    bool: boolean = true
+): ProductTuple[] {
+    if (key === "isAvailable") {
+        return array.filter((product) => product.isAvailable === bool);
+    }
     return [...array].sort((a, b) => {
         if (key === "name") {
-            return ascending ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
+            return bool ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
         } else if (key === "price") { 
-            return ascending ? a.price - b.price : b.price - a.price;
+            return bool ? a.price - b.price : b.price - a.price;
         }
         return 0; 
     });
 }
 
-console.log(getAvailableProducts(products));
-console.log(getProductsByCategory(products, { name: 'Elektronika' }));
-console.log(getAveragePriceByCategory(products, "Elektronika"));
-console.log("Sorted by name ascending name", sortProducts(products, "name", true));
+console.log(getAvailableProducts(products)); 
+console.log(getProductsByCategory(products, { name: 'Elektronika' })); 
+console.log(getAveragePriceByCategory(products, "Elektronika")); 
+console.log("Sorted by name ascending:", sortProducts(products, "name", true));
+console.log("Sorted by isAvailable product", sortProducts(products, "isAvailable", false));
