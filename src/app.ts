@@ -1,6 +1,6 @@
 type ProductTuple = {
     name: string;
-    category: string;
+    category: 'Elektronika' | 'Odzież' | 'AGD'; 
     price: number;
     isAvailable: boolean;
     sales: number;
@@ -20,13 +20,13 @@ function getAvailableProducts(array: ProductTuple[]): string[] {
     return availableProducts;
 }
 
-function getProductsByCategory(array: ProductTuple[], { name }: { name: string }): ProductTuple[] {
-    const filteredArray = array.filter((element) => element.category === name);
+function getProductsByCategory(array: ProductTuple[], { category }: { category: string }): ProductTuple[] {
+    const filteredArray = array.filter((element) => element.category === category);
     return filteredArray;
 }
 
 function getAveragePriceByCategory(array: ProductTuple[], category: string): number {
-    const categoryProducts = getProductsByCategory(array, { name: category });
+    const categoryProducts = getProductsByCategory(array, { category: category });
     return categoryProducts.length
         ? categoryProducts.reduce((sum, { price }) => sum + price, 0) / categoryProducts.length
         : 0;
@@ -51,7 +51,7 @@ function sortProducts(
 }
 
 console.log(getAvailableProducts(products)); 
-console.log(getProductsByCategory(products, { name: 'Elektronika' })); 
+console.log(getProductsByCategory(products, { category: 'Elektronika' })); 
 console.log(getAveragePriceByCategory(products, "Elektronika")); 
 console.log("Sorted by name ascending:", sortProducts(products, "name", true));
 console.log("Sorted by isAvailable product", sortProducts(products, "isAvailable", false));

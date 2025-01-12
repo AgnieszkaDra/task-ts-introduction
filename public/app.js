@@ -11,12 +11,12 @@ function getAvailableProducts(array) {
     availableProducts = array.filter((product) => product).map((product) => product.name);
     return availableProducts;
 }
-function getProductsByCategory(array, { name }) {
-    const filteredArray = array.filter((element) => element.category === name);
+function getProductsByCategory(array, { category }) {
+    const filteredArray = array.filter((element) => element.category === category);
     return filteredArray;
 }
 function getAveragePriceByCategory(array, category) {
-    const categoryProducts = getProductsByCategory(array, { name: category });
+    const categoryProducts = getProductsByCategory(array, { category: category });
     return categoryProducts.length
         ? categoryProducts.reduce((sum, { price }) => sum + price, 0) / categoryProducts.length
         : 0;
@@ -36,7 +36,7 @@ function sortProducts(array, key, bool = true) {
     });
 }
 console.log(getAvailableProducts(products));
-console.log(getProductsByCategory(products, { name: 'Elektronika' }));
+console.log(getProductsByCategory(products, { category: 'Elektronika' }));
 console.log(getAveragePriceByCategory(products, "Elektronika"));
 console.log("Sorted by name ascending:", sortProducts(products, "name", true));
 console.log("Sorted by isAvailable product", sortProducts(products, "isAvailable", false));
