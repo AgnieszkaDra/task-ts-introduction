@@ -7,37 +7,36 @@ let products = [
     { name: "Lodówka", category: "AGD", price: 2000, isAvailable: true, sales: 22 },
 ];
 function getAvailableProducts(array) {
-    let availableProducts = [];
-    availableProducts = array.filter((product) => product).map((product) => product.name);
-    return availableProducts;
+    return array.filter((product) => product.isAvailable);
 }
-function getProductsByCategory(array, { category }) {
-    const filteredArray = array.filter((element) => element.category === category);
+function getProductsByCategory(array, categoryName) {
+    const filteredArray = array.filter((element) => element.category === categoryName);
     return filteredArray;
 }
-function getAveragePriceByCategory(array, category) {
-    const categoryProducts = getProductsByCategory(array, { category: category });
+function getAveragePriceByCategory(array, categoryName) {
+    const categoryProducts = getProductsByCategory(array, categoryName);
     return categoryProducts.length
         ? categoryProducts.reduce((sum, { price }) => sum + price, 0) / categoryProducts.length
         : 0;
 }
-function sortProducts(array, key, bool = true) {
-    if (key === "isAvailable") {
-        return array.filter((product) => product.isAvailable === bool);
-    }
+function sortProducts(array, key, sort) {
     return [...array].sort((a, b) => {
         if (key === "name") {
-            return bool ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
+            return sort === "ASC" ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
         }
         else if (key === "price") {
-            return bool ? a.price - b.price : b.price - a.price;
+            return sort === "ASC" ? a.price - b.price : b.price - a.price;
+        }
+        else if (key === "popularity") {
+            return sort === "ASC" ? a.sales - b.sales : b.sales - a.sales;
         }
         return 0;
     });
 }
 console.log(getAvailableProducts(products));
-console.log(getProductsByCategory(products, { category: 'Elektronika' }));
+console.log(getProductsByCategory(products, 'Elektronika'));
 console.log(getAveragePriceByCategory(products, "Elektronika"));
-console.log("Sorted by name ascending:", sortProducts(products, "name", true));
-console.log("Sorted by isAvailable product", sortProducts(products, "isAvailable", false));
+console.log(sortProducts(products, "name", "ASC"));
+console.log(sortProducts(products, "name", "DESC"));
+console.log(sortProducts(products, "popularity", "ASC"));
 //# sourceMappingURL=app.js.map

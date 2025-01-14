@@ -14,19 +14,17 @@ let products: ProductTuple[] = [
     { name: "Lodówka", category: "AGD", price: 2000, isAvailable: true, sales: 22 },
 ];
 
-function getAvailableProducts(array: ProductTuple[]): string[] {
-  let availableProducts = [];
-    availableProducts = array.filter((product) => product).map((product) => product.name);
-    return availableProducts;
+function getAvailableProducts(array: ProductTuple[]): ProductTuple[] {
+    return array.filter((product) => product.isAvailable);
 }
 
-function getProductsByCategory(array: ProductTuple[], { category }: { category: string }): ProductTuple[] {
-    const filteredArray = array.filter((element) => element.category === category);
+function getProductsByCategory(array: ProductTuple[], categoryName: string ): ProductTuple[] {
+    const filteredArray = array.filter((element) => element.category === categoryName);
     return filteredArray;
 }
 
-function getAveragePriceByCategory(array: ProductTuple[], category: string): number {
-    const categoryProducts = getProductsByCategory(array, { category: category });
+function getAveragePriceByCategory(array: ProductTuple[], categoryName: string): number {
+    const categoryProducts = getProductsByCategory(array, categoryName);
     return categoryProducts.length
         ? categoryProducts.reduce((sum, { price }) => sum + price, 0) / categoryProducts.length
         : 0;
@@ -34,24 +32,24 @@ function getAveragePriceByCategory(array: ProductTuple[], category: string): num
 
 function sortProducts(
     array: ProductTuple[],
-    key: "name" | "price" | "isAvailable",
-    bool: boolean = true
+    key: "name" | "price" | "popularity",
+    sort: "ASC" | "DESC"
 ): ProductTuple[] {
-    if (key === "isAvailable") {
-        return array.filter((product) => product.isAvailable === bool);
-    }
     return [...array].sort((a, b) => {
         if (key === "name") {
-            return bool ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
-        } else if (key === "price") { 
-            return bool ? a.price - b.price : b.price - a.price;
+            return sort === "ASC" ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
+        } else if (key === "price") {
+            return sort === "ASC" ? a.price - b.price : b.price - a.price;
+        } else if (key === "popularity") {
+            return sort === "ASC" ? a.sales - b.sales : b.sales - a.sales;
         }
-        return 0; 
+        return 0;
     });
 }
 
 console.log(getAvailableProducts(products)); 
-console.log(getProductsByCategory(products, { category: 'Elektronika' })); 
+console.log(getProductsByCategory(products, 'Elektronika')); 
 console.log(getAveragePriceByCategory(products, "Elektronika")); 
-console.log("Sorted by name ascending:", sortProducts(products, "name", true));
-console.log("Sorted by isAvailable product", sortProducts(products, "isAvailable", false));
+console.log(sortProducts(products, "name", "ASC"));  
+console.log(sortProducts(products, "name", "DESC")); 
+console.log(sortProducts(products, "popularity", "ASC")); 
